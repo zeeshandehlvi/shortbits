@@ -516,10 +516,10 @@ function HomeView({
   }, []);
 
   return (
-    <div className="home-screen min-h-dvh px-5 pb-24 pt-4" style={{ "--screen-px": "20px" } as React.CSSProperties}>
-      <header className="mt-4">
+    <div className="home-screen min-h-dvh px-[clamp(14px,3.8vw,24px)] pb-24 pt-3" style={{ "--screen-px": "clamp(14px, 3.8vw, 24px)" } as React.CSSProperties}>
+      <header className="mt-3 sm:mt-4">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-          <h1 className="brand-wordmark min-w-0 text-[28px] font-bold leading-none tracking-tight">
+          <h1 className="brand-wordmark min-w-0 text-[clamp(22px,5.5vw,28px)] font-bold leading-none tracking-tight">
             ShortBits<span className="brand-dot">.</span>
           </h1>
           <div className="flex items-center gap-1.5 shrink-0">
@@ -591,8 +591,8 @@ function HomeView({
         )}
       </nav>
 
-      <div className="relative mt-5 flex items-center justify-between" style={{ zIndex: 30 }}>
-        <h2 className="flex items-center gap-1 text-[16px] font-bold">Trending now <Flame className="text-destructive" size={17} fill="currentColor" aria-label="fire" /></h2>
+      <div className="relative mt-4 sm:mt-5 flex items-center justify-between" style={{ zIndex: 30 }}>
+        <h2 className="flex items-center gap-1 text-[clamp(14px,3.8vw,16px)] font-bold">Trending now <Flame className="text-destructive" size={17} fill="currentColor" aria-label="fire" /></h2>
         <div className="relative" style={{ zIndex: 50 }}>
           <button
             type="button"
@@ -643,7 +643,7 @@ function HomeView({
       </div>
 
       {visibleStories.length > 0 ? (
-      <div className="relative mt-6 h-[540px] select-none touch-pan-y overflow-x-clip">
+      <div className="relative mt-4 sm:mt-5 h-[clamp(440px,calc(100dvh-200px),590px)] select-none touch-pan-y overflow-x-clip">
            {dragY < -25 && (
              <div className="pointer-events-none absolute inset-x-0 -top-1 z-30 flex justify-center">
                <span className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground shadow-lg">
@@ -718,8 +718,8 @@ function HomeView({
                  >
                    <StoryHeader story={prevStory} onDownload={() => void downloadStory(prevStory)} />
                    <button type="button" className="block w-full text-left" tabIndex={-1}>
-                     <h3 className="line-clamp-3 px-4 pb-3 pt-1 text-[19px] font-bold leading-[1.08]">{prevStory.title}</h3>
-                     <img src={prevStory.image} alt="" className="mt-2 h-[270px] w-full object-cover" width={1200} height={912} draggable={false} />
+                     <h3 className="line-clamp-3 px-4 pb-2.5 pt-1 text-[clamp(16px,4vw,20px)] font-bold leading-[1.12]">{prevStory.title}</h3>
+                     <img src={prevStory.image} alt="" className="mt-1.5 h-[clamp(200px,31vh,290px)] w-full object-cover" width={1200} height={912} draggable={false} />
                    </button>
                    <Engagement story={prevStory} />
                  </article>
@@ -856,8 +856,8 @@ function HomeView({
                  >
                    <StoryHeader story={story} onDownload={() => void downloadStory(story)} />
                    <button type="button" onClick={() => openStory(story)} className="block w-full text-left">
-                     <h3 className="line-clamp-3 px-4 pb-3 pt-1 text-[19px] font-bold leading-[1.08]">{story.title}</h3>
-                     <img src={story.image} alt="" className="mt-2 h-[270px] w-full object-cover" width={1200} height={912} draggable={false} />
+                     <h3 className="line-clamp-3 px-4 pb-2.5 pt-1 text-[clamp(16px,4vw,20px)] font-bold leading-[1.12]">{story.title}</h3>
+                     <img src={story.image} alt="" className="mt-1.5 h-[clamp(200px,31vh,290px)] w-full object-cover" width={1200} height={912} draggable={false} />
                    </button>
                    <Engagement story={story} />
                  </article>
@@ -871,7 +871,7 @@ function HomeView({
         <div className="mt-16 text-center text-sm text-muted-foreground">More {activeCategory} stories are arriving soon.</div>
       )}
       {visibleStories.length > 0 && (
-        <div className="mt-10 flex flex-col items-center gap-2">
+        <div className="mt-6 sm:mt-8 flex flex-col items-center gap-2">
           <div className="flex items-center gap-1.5">
             {(() => {
               const maxDots = 7;
@@ -924,8 +924,8 @@ function AllNewsView({ openStory, setView }: { openStory: (story: Story) => void
           <article key={`${story.id}-${index}`} className="story-card overflow-hidden">
              <StoryHeader story={story} onDownload={() => void downloadStory(story)} />
             <button type="button" onClick={() => openStory(story)} className="block w-full text-left">
-              <h2 className="px-4 pb-3 text-[18px] font-bold leading-[1.08]">{story.title}</h2>
-              <img src={story.image} alt="" className="h-[250px] w-full object-cover" width={1200} height={912} loading={index > 0 ? "lazy" : undefined} />
+              <h2 className="px-4 pb-2.5 text-[clamp(16px,3.8vw,19px)] font-bold leading-[1.12]">{story.title}</h2>
+              <img src={story.image} alt="" className="h-[clamp(200px,31vh,280px)] w-full object-cover" width={1200} height={912} loading={index > 0 ? "lazy" : undefined} />
             </button>
           </article>
         ))}
@@ -949,8 +949,8 @@ function SavedView({ openStory, setView }: { openStory: (story: Story) => void; 
           <article key={story.id} className="story-card overflow-hidden">
             <StoryHeader story={story} onDownload={() => void downloadStory(story)} />
             <button type="button" onClick={() => openStory(story)} className="block w-full text-left">
-              <h2 className="px-4 pb-3 text-[18px] font-bold leading-[1.08]">{story.title}</h2>
-              <img src={story.image} alt="" className="h-[250px] w-full object-cover" width={1200} height={912} loading={index > 0 ? "lazy" : undefined} />
+              <h2 className="px-4 pb-2.5 text-[clamp(16px,3.8vw,19px)] font-bold leading-[1.12]">{story.title}</h2>
+              <img src={story.image} alt="" className="h-[clamp(200px,31vh,280px)] w-full object-cover" width={1200} height={912} loading={index > 0 ? "lazy" : undefined} />
             </button>
             <Engagement story={story} />
           </article>
@@ -982,7 +982,7 @@ function ArticleView({
   const { views } = useStoryEngagement(story);
   return (
     <article className="article-screen min-h-dvh bg-card">
-      <div className="relative h-[310px] overflow-hidden">
+      <div className="relative h-[clamp(240px,34vh,360px)] overflow-hidden">
         <img src={story.image} alt="News scene for the featured story" className="h-full w-full object-cover" width={1200} height={912} />
         <div className="article-image-shade absolute inset-0" />
         <div className="absolute inset-x-0 top-0 px-5 pt-4 text-primary-foreground">
@@ -993,14 +993,14 @@ function ArticleView({
           </div>
         </div>
       </div>
-      <div className="relative -mt-6 min-h-[570px] rounded-t-[30px] bg-card px-5 pb-12 pt-5">
+      <div className="relative -mt-6 min-h-[570px] rounded-t-[clamp(22px,3vw,30px)] bg-card px-[clamp(16px,4.5vw,26px)] pb-12 pt-5">
         <div className="grid grid-cols-[minmax(0,1fr)_44px_44px_44px] items-center gap-2">
           <StorySource story={story} />
           <BookmarkButton story={story} size={20} />
           <ShareMenu story={story} />
           <IconButton label="Download article as PNG" onClick={() => void downloadStory(story)}><Download size={18} /></IconButton>
         </div>
-        <h1 className="mt-5 text-[26px] font-bold leading-[1.05]">{story.title}</h1>
+        <h1 className="mt-5 text-[clamp(21px,4.5vw,28px)] font-bold leading-[1.12]">{story.title}</h1>
         <p className="mt-3 text-[12px] font-medium text-muted-foreground">{story.date}</p>
         <div className="mt-5 flex flex-wrap items-center gap-3 text-[12px] font-bold">
           <span className="truncate">By {story.author}</span>
@@ -1011,7 +1011,7 @@ function ArticleView({
           </span>
         </div>
         <div className="my-4 h-px bg-border" />
-        <div className="space-y-5 text-[15px] font-medium leading-[1.45] text-article-copy">
+        <div className="space-y-5 text-[clamp(14.5px,2.5vw,16.5px)] font-medium leading-[1.55] text-article-copy">
           {story.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
       </div>
@@ -1449,7 +1449,7 @@ function DesktopView() {
     <main className="desktop-stage min-h-dvh">
       <header className="desktop-header">
         <div className="desktop-wrap flex items-center gap-6 py-4">
-          <h1 className="brand-wordmark text-[26px] font-bold leading-none tracking-tight">
+          <h1 className="brand-wordmark text-[clamp(22px,2.2vw,28px)] font-bold leading-none tracking-tight">
             ShortBits<span className="brand-dot">.</span>
           </h1>
           <nav aria-label="Categories" className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto no-scrollbar">
@@ -1501,27 +1501,29 @@ function DesktopView() {
         </div>
       </header>
 
-      <div className="desktop-wrap grid grid-cols-[minmax(0,1fr)_360px] gap-10 py-10">
+      <div className="desktop-wrap grid grid-cols-[minmax(0,1fr)_clamp(300px,26vw,380px)] gap-[clamp(24px,3vw,44px)] py-[clamp(20px,3vh,40px)]">
         <article key={selected.id} className="desktop-article relative">
-          <button
-            type="button"
-            onClick={goPrev}
-            disabled={!prevStory}
-            aria-label="Previous article"
-            className="absolute -left-6 top-[524px] z-10 grid h-14 w-14 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/70 shadow-lg backdrop-blur-md transition hover:bg-background/90 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <button
-            type="button"
-            onClick={goNext}
-            disabled={!nextStory}
-            aria-label="Next article"
-            className="absolute -right-6 top-[524px] z-10 grid h-14 w-14 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/70 shadow-lg backdrop-blur-md transition hover:bg-background/90 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            <ChevronRight size={24} />
-          </button>
-          <img src={selected.image} alt="" className="h-[420px] w-full rounded-3xl object-cover" />
+          <div className="relative">
+            <button
+              type="button"
+              onClick={goPrev}
+              disabled={!prevStory}
+              aria-label="Previous article"
+              className="absolute -left-5 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/80 shadow-lg backdrop-blur-md transition hover:bg-background disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              disabled={!nextStory}
+              aria-label="Next article"
+              className="absolute -right-5 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/80 shadow-lg backdrop-blur-md transition hover:bg-background disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ChevronRight size={22} />
+            </button>
+            <img src={selected.image} alt="" className="h-[clamp(300px,38vh,460px)] w-full rounded-2xl object-cover" />
+          </div>
           <div className="mt-6 flex items-center justify-between gap-4">
             <StorySource story={selected} />
             <div className="flex items-center gap-2">
@@ -1531,12 +1533,12 @@ function DesktopView() {
               </IconButton>
             </div>
           </div>
-          <h2 className="mt-5 text-[40px] font-bold leading-[1.05]">{selected.title}</h2>
+          <h2 className="mt-5 text-[clamp(26px,2.8vw,42px)] font-bold leading-[1.1]">{selected.title}</h2>
           <p className="mt-3 text-[13px] font-medium text-muted-foreground">
             By {selected.author} · {selected.date}
           </p>
           <div className="my-6 h-px bg-border" />
-          <div className="max-w-[70ch] space-y-5 text-[17px] font-medium leading-[1.6] text-article-copy">
+          <div className="max-w-[70ch] space-y-5 text-[clamp(15px,1.2vw,17.5px)] font-medium leading-[1.6] text-article-copy">
             {selected.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}

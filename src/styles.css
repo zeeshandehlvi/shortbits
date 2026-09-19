@@ -164,8 +164,10 @@
 .phone-shell {
   position: relative;
   margin-inline: auto;
-  width: min(100%, 430px);
+  width: 100%;
+  max-width: 480px;
   height: 100dvh;
+  height: 100svh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -417,7 +419,7 @@
 
 .bottom-nav {
   position: absolute;
-  bottom: 18px;
+  bottom: max(16px, env(safe-area-inset-bottom, 16px));
   left: 50%;
   z-index: 40;
   display: grid;
@@ -449,8 +451,22 @@
 .signal-bars { font-size: 8px; letter-spacing: -1px; }
 .battery { display: inline-block; width: 14px; height: 7px; border-radius: 2px; background: currentColor; }
 
-@media (min-width: 431px) {
-  .phone-shell { height: 900px; }
+/* Tablet / Foldable view (640px to 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .news-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 2.5vw, 24px);
+    min-height: 100dvh;
+  }
+  .phone-shell {
+    max-width: min(100%, clamp(480px, 75vw, 640px));
+    height: min(calc(100dvh - 32px), 940px);
+    height: min(calc(100svh - 32px), 940px);
+    border-radius: clamp(24px, 3vw, 36px);
+    border: 1px solid oklch(0.78 0.05 75 / 0.25);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -469,7 +485,7 @@
     oklch(0.98 0.012 75);
   background-size: 30px 30px;
 }
-.desktop-wrap { width: min(100%, 1240px); margin-inline: auto; padding-inline: 32px; }
+.desktop-wrap { width: min(100% - clamp(24px, 4vw, 64px), 1380px); margin-inline: auto; padding-inline: 0; }
 .desktop-header {
   position: sticky;
   top: 0;
@@ -497,9 +513,9 @@
 }
 .desktop-article {
   border: 1px solid oklch(1 0 0 / 0.9);
-  border-radius: 28px;
+  border-radius: clamp(20px, 2.5vw, 32px);
   background: var(--card);
-  padding: 22px;
+  padding: clamp(18px, 2.5vw, 28px);
   box-shadow: 0 16px 44px oklch(0.27 0.05 245 / 0.1);
 }
 .desktop-item {

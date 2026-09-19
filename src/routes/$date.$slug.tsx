@@ -219,7 +219,7 @@ function ArticlePermalinkPage() {
         <div className="phone-scroll">
           <article className="article-screen min-h-dvh bg-card">
             {/* Hero Image Section */}
-            <div className="relative h-[310px] overflow-hidden">
+            <div className="relative h-[clamp(240px,34vh,360px)] overflow-hidden">
               <img
                 src={article.image_url || "https://theshortbits.com/og-image.jpg"}
                 alt={article.title}
@@ -253,7 +253,7 @@ function ArticlePermalinkPage() {
             </div>
 
             {/* Bottom Card Content */}
-            <div className="relative -mt-6 min-h-[570px] rounded-t-[30px] bg-card px-5 pb-12 pt-5">
+            <div className="relative -mt-6 min-h-[570px] rounded-t-[clamp(22px,3vw,30px)] bg-card px-[clamp(16px,4.5vw,26px)] pb-12 pt-5">
               {/* Header Row: Source info + actions */}
               <div className="grid grid-cols-[minmax(0,1fr)_44px_44px_44px] items-center gap-2">
                 <div className="flex min-w-0 items-center gap-2.5">
@@ -300,7 +300,7 @@ function ArticlePermalinkPage() {
               </div>
 
               {/* Title */}
-              <h1 className="mt-5 text-[26px] font-bold leading-[1.05]">{article.title}</h1>
+              <h1 className="mt-5 text-[clamp(21px,4.5vw,28px)] font-bold leading-[1.12]">{article.title}</h1>
               <p className="mt-3 text-[12px] font-medium text-muted-foreground">{formattedDate}</p>
 
               {/* Author & Engagement Row */}
@@ -328,7 +328,7 @@ function ArticlePermalinkPage() {
               <div className="my-4 h-px bg-border" />
 
               {/* Paragraphs */}
-              <div className="space-y-5 text-[15px] font-medium leading-[1.45] text-article-copy">
+              <div className="space-y-5 text-[clamp(14.5px,2.5vw,16.5px)] font-medium leading-[1.55] text-article-copy">
                 {paragraphs.map((paragraph, idx) => (
                   <p key={idx}>{paragraph}</p>
                 ))}
