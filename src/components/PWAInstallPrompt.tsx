@@ -131,18 +131,12 @@ export function PWAInstallPrompt() {
         {/* Header with App Icon, Title, and Close */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#012c6c] text-white shadow-sm border border-[#012c6c]/20">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#012c6c] shadow-sm border border-[#012c6c]/20">
               <img
                 src="/icon-192.png"
                 alt="ShortBits"
-                className="h-full w-full object-contain p-1"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = "none";
-                }}
+                className="h-full w-full object-contain"
               />
-              <span className="absolute inset-0 flex items-center justify-center font-bold text-sm tracking-tight text-white pointer-events-none">
-                SB<span className="text-[#24febf]">.</span>
-              </span>
             </div>
 
             <div className="min-w-0">
