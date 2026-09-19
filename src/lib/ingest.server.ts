@@ -427,13 +427,16 @@ type GeminiPick = {
   country?: string | null;
 };
 
-export async function rankWithGemini(items: FeedItem[], want: number): Promise<RankedItem[]> {
-  const cfEnv = ((typeof globalThis !== "undefined" && (globalThis as any).__cf_env__) || {}) as Record<string, string | undefined>;
+export async function rankWithGemini(items: FeedItem[], want: number, overrideKey?: string): Promise<RankedItem[]> {
+  const g = typeof globalThis !== "undefined" ? (globalThis as any) : {};
+  const cfEnv = (g.__env__ || g.__cf_env__ || {}) as Record<string, string | undefined>;
   const apiKey =
+    overrideKey ||
     process.env["GEMINI_API_KEY"] ||
     process.env["VITE_GEMINI_API_KEY"] ||
     cfEnv["GEMINI_API_KEY"] ||
     cfEnv["VITE_GEMINI_API_KEY"] ||
+    g["GEMINI_API_KEY"] ||
     (typeof import.meta !== "undefined" && (import.meta as any).env?.["GEMINI_API_KEY"]) ||
     (typeof import.meta !== "undefined" && (import.meta as any).env?.["VITE_GEMINI_API_KEY"]);
 
@@ -572,7 +575,7 @@ ${JSON.stringify(candidates)}`;
 
 export async function runIngest(
   supabase: { from: (table: string) => any },
-  options: { minutes?: number; categories?: string[]; want?: number; status?: string; createdBy?: string | null },
+  options: { minutes?: number; categories?: string[]; want?: number; status?: string; createdBy?: string | null; apiKey?: string },
 ) {
   const want = options.want ?? 30;
   const base = options.minutes ?? 60;
@@ -621,7 +624,7 @@ export async function runIngest(
   if (fresh.length === 0) return { inserted: 0, scanned, candidates: 0 };
 
   // Rank with virality scoring and Gemini
-  const ranked = await rankWithGemini(fresh, want);
+  const ranked = await rankWithGemini(fresh, want, options.apiKey);
   const rows = ranked.map((item) => ({
     title: formatViralTitle(item.title),
     detail: formatViralDetail(item.detail),

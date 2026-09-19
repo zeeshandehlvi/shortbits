@@ -30,7 +30,8 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 function createSupabaseAdminClient() {
-  const cfEnv = ((typeof globalThis !== "undefined" && (globalThis as any).__cf_env__) || {}) as Record<string, string | undefined>;
+  const g = typeof globalThis !== "undefined" ? (globalThis as any) : {};
+  const cfEnv = (g.__env__ || g.__cf_env__ || {}) as Record<string, string | undefined>;
   const SUPABASE_URL =
     process.env["SUPABASE_URL"] ||
     process.env["VITE_SUPABASE_URL"] ||

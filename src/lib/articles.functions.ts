@@ -162,7 +162,7 @@ export const adminSetStatus = createServerFn({ method: "POST" })
 
 export const adminIngestFeeds = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { categories?: string[]; minutes?: number; want?: number; status?: string }) => input)
+  .inputValidator((input: { categories?: string[]; minutes?: number; want?: number; status?: string; apiKey?: string }) => input)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { runIngest } = await import("./ingest.server");
@@ -172,6 +172,7 @@ export const adminIngestFeeds = createServerFn({ method: "POST" })
       want: data.want ?? 30,
       status: data.status ?? "published",
       createdBy: context.userId,
+      apiKey: data.apiKey,
     });
   });
 

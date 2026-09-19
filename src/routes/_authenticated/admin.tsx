@@ -159,6 +159,12 @@ function AdminPage() {
   const [pullHours, setPullHours] = useState(1);
   const [pullCount, setPullCount] = useState(30);
   const [pullStatus, setPullStatus] = useState<"published" | "draft">("published");
+  const [customApiKey, setCustomApiKey] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("shortbits_gemini_key") || "";
+    }
+    return "";
+  });
 
   // Ingestion progress tracker
   const [ingestProgress, setIngestProgress] = useState(0);
@@ -227,6 +233,7 @@ function AdminPage() {
           want: pullCount,
           ...(pullCategory === "all" ? {} : { categories: [pullCategory] }),
           status: pullStatus,
+          apiKey: customApiKey.trim() || undefined,
         },
       }),
     onSuccess: (result: any) => {
@@ -1069,6 +1076,29 @@ function AdminPage() {
                     <option value="published">Publish Immediately to Live Feed</option>
                     <option value="draft">Save to Drafts (Review Before Live)</option>
                   </select>
+                </div>
+
+                {/* Optional Custom Gemini API Key Override */}
+                <div className="space-y-1.5 md:col-span-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#56667a]">
+                      Gemini API Key (Optional Override)
+                    </label>
+                    <span className="text-[10px] text-[#718096]">Saved locally in browser</span>
+                  </div>
+                  <input
+                    type="password"
+                    placeholder="AQ.Ab8... (Leave blank to use Cloudflare Worker environment)"
+                    value={customApiKey}
+                    onChange={(e) => {
+                      setCustomApiKey(e.target.value);
+                      if (typeof window !== "undefined") {
+                        if (e.target.value) localStorage.setItem("shortbits_gemini_key", e.target.value);
+                        else localStorage.removeItem("shortbits_gemini_key");
+                      }
+                    }}
+                    className="w-full rounded-2xl border border-[#ddd8cd] bg-white px-3.5 py-2.5 text-sm font-semibold text-[#10213a] outline-none focus:border-[#012c6c]"
+                  />
                 </div>
               </div>
 
