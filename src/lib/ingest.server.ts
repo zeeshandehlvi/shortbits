@@ -422,7 +422,15 @@ type GeminiPick = {
 };
 
 export async function rankWithGemini(items: FeedItem[], want: number): Promise<RankedItem[]> {
-  const apiKey = process.env["GEMINI_API_KEY"];
+  const cfEnv = ((typeof globalThis !== "undefined" && (globalThis as any).__cf_env__) || {}) as Record<string, string | undefined>;
+  const apiKey =
+    process.env["GEMINI_API_KEY"] ||
+    process.env["VITE_GEMINI_API_KEY"] ||
+    cfEnv["GEMINI_API_KEY"] ||
+    cfEnv["VITE_GEMINI_API_KEY"] ||
+    (typeof import.meta !== "undefined" && (import.meta as any).env?.["GEMINI_API_KEY"]) ||
+    (typeof import.meta !== "undefined" && (import.meta as any).env?.["VITE_GEMINI_API_KEY"]);
+
   if (!apiKey) {
     throw new Error(
       "GEMINI_API_KEY is not configured in .env or environment! AI news generation requires a valid Gemini API key.",
