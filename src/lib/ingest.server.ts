@@ -632,7 +632,7 @@ export async function runIngest(
     category: item.category,
     city: item.city,
     country: item.country,
-    published_at: item.published_at,
+    published_at: new Date().toISOString(),
     status: options.status ?? "published",
     feed_link: item.feed_link,
     created_by: options.createdBy ?? null,

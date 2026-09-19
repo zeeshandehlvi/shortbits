@@ -13,10 +13,11 @@ export type Article = {
   city: string | null;
   country: string | null;
   published_at: string;
+  created_at?: string;
   status: string;
 };
 
-const ARTICLE_FIELDS = "id, title, detail, image_url, category, city, country, published_at, status";
+const ARTICLE_FIELDS = "id, title, detail, image_url, category, city, country, published_at, created_at, status";
 
 function serverPublicClient() {
   const key =
@@ -51,6 +52,7 @@ export const listPublishedArticles = createServerFn({ method: "GET" }).handler(a
     .select(ARTICLE_FIELDS)
     .eq("status", "published")
     .order("published_at", { ascending: false })
+    .order("created_at", { ascending: false })
     .limit(60);
   if (error) throw new Error(error.message);
   return (data ?? []) as Article[];
@@ -82,6 +84,7 @@ export const adminListArticles = createServerFn({ method: "GET" })
     const { data, error } = await context.supabase
       .from("articles")
       .select(ARTICLE_FIELDS)
+      .order("created_at", { ascending: false })
       .order("published_at", { ascending: false })
       .limit(300);
     if (error) throw new Error(error.message);

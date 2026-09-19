@@ -1695,8 +1695,10 @@ function mergePublishedArticles(articles: Article[]) {
   articles.forEach((article) => {
     if (mergedArticleIds.has(article.id)) return;
     mergedArticleIds.add(article.id);
-    const published = new Date(article.published_at);
-    const publishedAt = isNaN(published.getTime()) ? Date.now() : published.getTime();
+    const pubTime = new Date(article.published_at).getTime();
+    const createTime = article.created_at ? new Date(article.created_at).getTime() : 0;
+    const publishedAt = Math.max(isNaN(pubTime) ? 0 : pubTime, isNaN(createTime) ? 0 : createTime);
+    const effectiveDate = new Date(publishedAt || Date.now());
     const paragraphs = article.detail
       .split(/\n{1,}/)
       .map((part) => part.trim())
@@ -1706,14 +1708,14 @@ function mergePublishedArticles(articles: Article[]) {
       source: article.country ?? "World",
       ...(article.city ? { city: article.city } : {}),
       topic: topicForCategory(article.category),
-      age: relativeAge(article.published_at),
+      age: relativeAge(effectiveDate.toISOString()),
       title: article.title,
       image: article.image_url || summitNews,
       category: article.category.charAt(0).toUpperCase() + article.category.slice(1),
       likes: "0",
       comments: "0",
       views: "0",
-      date: published.toLocaleString(),
+      date: effectiveDate.toLocaleString(),
       publishedAt,
       author: "ShortBits Desk",
       body: paragraphs.length ? paragraphs : [article.title],
