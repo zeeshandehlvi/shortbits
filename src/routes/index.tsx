@@ -871,7 +871,7 @@ function HomeView({
         <div className="mt-16 text-center text-sm text-muted-foreground">More {activeCategory} stories are arriving soon.</div>
       )}
       {visibleStories.length > 0 && (
-        <div className="mt-6 sm:mt-8 flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <div className="flex items-center gap-1.5">
             {(() => {
               const maxDots = 7;
