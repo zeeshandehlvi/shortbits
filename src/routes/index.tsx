@@ -516,7 +516,7 @@ function HomeView({
   }, []);
 
   return (
-    <div className="home-screen min-h-dvh px-[clamp(14px,3.8vw,24px)] pb-24 pt-3" style={{ "--screen-px": "clamp(14px, 3.8vw, 24px)" } as React.CSSProperties}>
+    <div className="home-screen min-h-dvh px-[clamp(14px,3.8vw,24px)] pb-24 pt-3" style={{ "--screen-px": "clamp(14px, 3.8vw, 24px)", "--story-img-h": "clamp(190px, 29vh, 280px)" } as React.CSSProperties}>
       <header className="mt-3 sm:mt-4">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
           <h1 className="brand-wordmark min-w-0 text-[clamp(22px,5.5vw,28px)] font-bold leading-none tracking-tight">
@@ -643,7 +643,10 @@ function HomeView({
       </div>
 
       {visibleStories.length > 0 ? (
-      <div className="relative mt-4 sm:mt-5 h-[clamp(440px,calc(100dvh-200px),590px)] select-none touch-pan-y overflow-x-clip">
+      <div
+        className="relative mt-3 sm:mt-4 select-none touch-pan-y overflow-x-clip"
+        style={{ height: "calc(var(--story-img-h, 250px) + 254px)" }}
+      >
            {dragY < -25 && (
              <div className="pointer-events-none absolute inset-x-0 -top-1 z-30 flex justify-center">
                <span className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground shadow-lg">
@@ -718,8 +721,8 @@ function HomeView({
                  >
                    <StoryHeader story={prevStory} onDownload={() => void downloadStory(prevStory)} />
                    <button type="button" className="block w-full text-left" tabIndex={-1}>
-                     <h3 className="line-clamp-3 px-4 pb-2.5 pt-1 text-[clamp(16px,4vw,20px)] font-bold leading-[1.12]">{prevStory.title}</h3>
-                     <img src={prevStory.image} alt="" className="mt-1.5 h-[clamp(200px,31vh,290px)] w-full object-cover" width={1200} height={912} draggable={false} />
+                     <h3 className="line-clamp-3 min-h-[58px] px-4 pb-2 pt-1 text-[clamp(16px,4vw,20px)] font-bold leading-[1.12]">{prevStory.title}</h3>
+                     <img src={prevStory.image} alt="" className="mt-1.5 h-[var(--story-img-h,240px)] w-full object-cover" width={1200} height={912} draggable={false} />
                    </button>
                    <Engagement story={prevStory} />
                  </article>
@@ -856,8 +859,8 @@ function HomeView({
                  >
                    <StoryHeader story={story} onDownload={() => void downloadStory(story)} />
                    <button type="button" onClick={() => openStory(story)} className="block w-full text-left">
-                     <h3 className="line-clamp-3 px-4 pb-2.5 pt-1 text-[clamp(16px,4vw,20px)] font-bold leading-[1.12]">{story.title}</h3>
-                     <img src={story.image} alt="" className="mt-1.5 h-[clamp(200px,31vh,290px)] w-full object-cover" width={1200} height={912} draggable={false} />
+                     <h3 className="line-clamp-3 min-h-[58px] px-4 pb-2 pt-1 text-[clamp(16px,4vw,20px)] font-bold leading-[1.12]">{story.title}</h3>
+                     <img src={story.image} alt="" className="mt-1.5 h-[var(--story-img-h,240px)] w-full object-cover" width={1200} height={912} draggable={false} />
                    </button>
                    <Engagement story={story} />
                  </article>
@@ -871,7 +874,7 @@ function HomeView({
         <div className="mt-16 text-center text-sm text-muted-foreground">More {activeCategory} stories are arriving soon.</div>
       )}
       {visibleStories.length > 0 && (
-        <div className="flex flex-col items-center gap-2">
+        <div className="mt-[clamp(10px,1.8vh,18px)] flex flex-col items-center gap-1.5">
           <div className="flex items-center gap-1.5">
             {(() => {
               const maxDots = 7;
