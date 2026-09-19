@@ -28,7 +28,7 @@
 // ============================================================
 
 const googleNews = (query: string, hl = "en-US", gl = "US") =>
-    `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=${hl}&gl=${gl}&ceid=${gl}:en`;
+    `https://news.google.com/rss/search?q=${encodeURIComponent(query.includes("when:") ? query : `${query} when:48h`)}&hl=${hl}&gl=${gl}&ceid=${gl}:en`;
 
 const sources = [
 

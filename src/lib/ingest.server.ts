@@ -310,10 +310,14 @@ export function scoreItemForVirality(item: FeedItem): number {
 
 async function fetchFeed(url: string) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 9000);
+  const timer = setTimeout(() => controller.abort(), 8000);
   try {
     const response = await fetch(url, {
-      headers: { "user-agent": "Mozilla/5.0 (compatible; ShortBits/1.0)" },
+      headers: {
+        "user-agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        accept: "application/rss+xml, application/xml, text/xml, */*",
+      },
       signal: controller.signal,
     });
     if (!response.ok) return null;
@@ -342,9 +346,9 @@ export async function collectFeedItems(options: {
   perFeed?: number;
 }): Promise<{ items: FeedItem[]; scanned: number }> {
   const { NEWS_SOURCES } = await import("./news-sources");
-  const minutes = options.minutes && options.minutes > 0 ? options.minutes : 60;
-  const cutoff = Date.now() - minutes * 60 * 1000;
-  const perFeed = options.perFeed ?? 15;
+  const minutes = options.minutes && options.minutes > 0 ? options.minutes : 0;
+  const cutoff = minutes > 0 ? Date.now() - minutes * 60 * 1000 : 0;
+  const perFeed = options.perFeed ?? 20;
 
   const pool = options.categories?.length
     ? NEWS_SOURCES.filter((source) => options.categories!.includes(source.category))
@@ -364,13 +368,15 @@ export async function collectFeedItems(options: {
       return bScore - aScore;
     });
 
-  const selected = sortedSources.slice(0, options.maxSources ?? 200);
+  // Limit to max 28 sources so we stay well within Cloudflare Worker free tier 50 subrequest limit
+  const limit = Math.min(options.maxSources ?? 28, 30);
+  const selected = sortedSources.slice(0, limit);
 
   const seenLinks = new Set<string>();
   const seenTitles = new Set<string>();
   const items: FeedItem[] = [];
 
-  await inBatches(selected, 15, async (source) => {
+  await inBatches(selected, 6, async (source) => {
     const xml = await fetchFeed(source.feed_url!);
     if (!xml) return;
     const blocks = xml.includes("<item")
@@ -386,7 +392,7 @@ export async function collectFeedItems(options: {
       const dateText = tag(block, "pubDate") || tag(block, "published") || tag(block, "updated");
       const published = dateText ? new Date(clean(dateText)) : new Date();
       const stamp = Number.isFinite(published.getTime()) ? published.getTime() : Date.now();
-      if (stamp < cutoff) continue;
+      if (cutoff > 0 && stamp < cutoff) continue;
 
       const titleKey = normaliseKey(title);
       if (seenLinks.has(link) || seenTitles.has(titleKey)) continue;
@@ -580,19 +586,36 @@ export async function runIngest(
     .limit(4000);
   const known = new Set((existing ?? []).map((row: { feed_link: string }) => row.feed_link));
 
-  // Widen the time window until there is a healthy candidate pool
-  const windows = [base, base * 3, base * 8, base * 24].filter((value, index, all) => all.indexOf(value) === index);
+  // Collect from top prioritized sources ONCE (staying within Cloudflare subrequest limit)
+  const collected = await collectFeedItems({
+    perFeed: 25,
+    maxSources: 28,
+    ...(options.categories ? { categories: options.categories } : {}),
+  });
+  const scanned = collected.scanned;
+
+  // Filter fresh candidates using widening recency windows in-memory (no repeated network calls!)
+  const windows = [base, base * 3, base * 8, base * 24, base * 72, 0];
   let fresh: FeedItem[] = [];
-  let scanned = 0;
+
   for (const minutes of windows) {
-    const collected = await collectFeedItems({
-      minutes,
-      perFeed: 25,
-      ...(options.categories ? { categories: options.categories } : {}),
+    const cutoff = minutes > 0 ? Date.now() - minutes * 60 * 1000 : 0;
+    fresh = collected.items.filter((item) => {
+      if (known.has(item.feed_link)) return false;
+      if (cutoff > 0) {
+        const stamp = new Date(item.published_at).getTime();
+        return stamp >= cutoff;
+      }
+      return true;
     });
-    scanned = collected.scanned;
-    fresh = collected.items.filter((item) => !known.has(item.feed_link));
-    if (fresh.length >= want * 3) break;
+    if (fresh.length >= want * 2) break;
+  }
+
+  // If still fewer than want, sort all un-ingested items by recency and take the freshest
+  if (fresh.length < want) {
+    fresh = collected.items
+      .filter((item) => !known.has(item.feed_link))
+      .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
   }
 
   if (fresh.length === 0) return { inserted: 0, scanned, candidates: 0 };
