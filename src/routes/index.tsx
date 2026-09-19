@@ -519,7 +519,7 @@ function HomeView({
     <div className="home-screen min-h-dvh px-[clamp(14px,3.8vw,24px)] pb-24 pt-3" style={{ "--screen-px": "clamp(14px, 3.8vw, 24px)", "--story-img-h": "clamp(190px, 29vh, 280px)" } as React.CSSProperties}>
       <header className="mt-3 sm:mt-4">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-          <h1 className="brand-wordmark min-w-0 text-[clamp(22px,5.5vw,28px)] font-bold leading-none tracking-tight">
+          <h1 className="brand-wordmark min-w-0 text-[clamp(22px,5.5vw,28px)] font-extrabold leading-none tracking-tight">
             ShortBits<span className="brand-dot">.</span>
           </h1>
           <div className="flex items-center gap-1.5 shrink-0">
@@ -1452,7 +1452,7 @@ function DesktopView() {
     <main className="desktop-stage min-h-dvh">
       <header className="desktop-header">
         <div className="desktop-wrap flex items-center gap-6 py-4">
-          <h1 className="brand-wordmark text-[clamp(22px,2.2vw,28px)] font-bold leading-none tracking-tight">
+          <h1 className="brand-wordmark text-[clamp(22px,2.2vw,28px)] font-extrabold leading-none tracking-tight">
             ShortBits<span className="brand-dot">.</span>
           </h1>
           <nav aria-label="Categories" className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto no-scrollbar">

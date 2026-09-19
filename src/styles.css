@@ -331,13 +331,16 @@
 
 .brand-wordmark {
   font-family: "Space Grotesk", "Manrope", ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: #012c6c;
+  -webkit-text-stroke: 0.35px currentColor;
 }
 
 .brand-dot {
   color: #24febf;
+  font-weight: 900;
+  -webkit-text-stroke: 0.5px currentColor;
 }
 
 .category-nav {
