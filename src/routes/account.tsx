@@ -153,10 +153,14 @@ export default function AccountPage() {
 
     try {
       if (authMode === "signup") {
+        const redirectUrl =
+          typeof window !== "undefined" && window.location.origin.includes("theshortbits.com")
+            ? `${window.location.origin}/account`
+            : "https://theshortbits.com/account";
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/account` },
+          options: { emailRedirectTo: redirectUrl },
         });
         if (error) {
           setMessage({ type: "error", text: error.message });
@@ -200,8 +204,12 @@ export default function AccountPage() {
     setBusy(true);
     setMessage(null);
     try {
+      const redirectUrl =
+        typeof window !== "undefined" && window.location.origin.includes("theshortbits.com")
+          ? `${window.location.origin}/account`
+          : "https://theshortbits.com/account";
       const { error } = await supabase.auth.resetPasswordForEmail(sessionUser.email, {
-        redirectTo: `${window.location.origin}/account`,
+        redirectTo: redirectUrl,
       });
       if (error) {
         setMessage({ type: "error", text: error.message });
