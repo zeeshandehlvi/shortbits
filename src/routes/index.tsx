@@ -35,6 +35,7 @@ import { useServerFn } from "@tanstack/react-start";
 
 import { ShortsFeed } from "@/components/ShortsFeed";
 import { EPaperPage } from "@/components/EPaperPage";
+import { FontSizeControl } from "@/components/FontSizeControl";
 import { downloadEpaperPDF, downloadStoryClip } from "@/lib/epaper";
 import { listPublishedArticles, slugify, type Article } from "@/lib/articles.functions";
 
@@ -523,6 +524,7 @@ function HomeView({
             ShortBits<span className="brand-dot">.</span>
           </h1>
           <div className="flex items-center gap-1.5 shrink-0">
+            <FontSizeControl />
             {!isStandalone && (
               <button
                 type="button"
@@ -997,8 +999,9 @@ function ArticleView({
         </div>
       </div>
       <div className="relative -mt-6 min-h-[570px] rounded-t-[clamp(22px,3vw,30px)] bg-card px-[clamp(16px,4.5vw,26px)] pb-12 pt-5">
-        <div className="grid grid-cols-[minmax(0,1fr)_44px_44px_44px] items-center gap-2">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto_44px_44px_44px] items-center gap-2">
           <StorySource story={story} />
+          <FontSizeControl />
           <BookmarkButton story={story} size={20} />
           <ShareMenu story={story} />
           <IconButton label="Download article as PNG" onClick={() => void downloadStory(story)}><Download size={18} /></IconButton>
@@ -1477,6 +1480,7 @@ function DesktopView() {
               aria-label="Search news"
             />
           </label>
+          <FontSizeControl />
           <button
             type="button"
             className="install-pwa-button"
@@ -1530,6 +1534,7 @@ function DesktopView() {
           <div className="mt-6 flex items-center justify-between gap-4">
             <StorySource story={selected} />
             <div className="flex items-center gap-2">
+              <FontSizeControl />
               <ShareMenu story={selected} />
               <IconButton label="Download article as PNG" onClick={() => void downloadStory(selected)}>
                 <Download size={18} />

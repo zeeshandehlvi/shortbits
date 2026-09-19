@@ -24,6 +24,7 @@ import {
   type Article,
 } from "@/lib/articles.functions";
 import { downloadStoryClip, type EPaperStory } from "@/lib/epaper";
+import { FontSizeControl } from "@/components/FontSizeControl";
 
 export const Route = createFileRoute("/$date/$slug")({
   loader: async ({ params }) => {
@@ -255,7 +256,7 @@ function ArticlePermalinkPage() {
             {/* Bottom Card Content */}
             <div className="relative -mt-6 min-h-[570px] rounded-t-[clamp(22px,3vw,30px)] bg-card px-[clamp(16px,4.5vw,26px)] pb-12 pt-5">
               {/* Header Row: Source info + actions */}
-              <div className="grid grid-cols-[minmax(0,1fr)_44px_44px_44px] items-center gap-2">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto_44px_44px_44px] items-center gap-2">
                 <div className="flex min-w-0 items-center gap-2.5">
                   <div className="source-logo shrink-0" aria-label={`${article.category} news`}>
                     {topicIcon(article.category)}
@@ -269,6 +270,8 @@ function ArticlePermalinkPage() {
                     </p>
                   </div>
                 </div>
+
+                <FontSizeControl />
 
                 <button
                   type="button"

@@ -64,6 +64,7 @@
 }
 
 :root {
+  --font-scale: 1;
   --story-img-h: clamp(190px, 29vh, 280px);
   --radius: 1rem;
   --background: oklch(0.972 0.018 245);
@@ -99,6 +100,29 @@
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
   --article-copy: oklch(0.38 0.014 255);
+}
+
+/* Dynamic Font Scaling via A|A control */
+.text-article-copy {
+  font-size: calc(clamp(14.5px, 2.5vw, 16.5px) * var(--font-scale, 1)) !important;
+  line-height: 1.55;
+}
+
+.story-card h3,
+.story-card h2 {
+  font-size: calc(clamp(16px, 4vw, 20px) * var(--font-scale, 1)) !important;
+}
+
+.article-screen h1 {
+  font-size: calc(clamp(21px, 4.5vw, 28px) * var(--font-scale, 1)) !important;
+}
+
+.desktop-article h2 {
+  font-size: calc(clamp(26px, 2.8vw, 42px) * var(--font-scale, 1)) !important;
+}
+
+.desktop-article .text-article-copy {
+  font-size: calc(clamp(15px, 1.2vw, 17.5px) * var(--font-scale, 1)) !important;
 }
 
 .dark {
