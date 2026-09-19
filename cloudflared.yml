@@ -1,0 +1,13 @@
+tunnel: b43e02cc-a25a-47a4-9e6d-7f150c28e626
+credentials-file: /Users/mohammadzeeshan/.cloudflared/b43e02cc-a25a-47a4-9e6d-7f150c28e626.json
+
+ingress:
+  - hostname: theshortbits.com
+    service: http://localhost:8080
+  - hostname: www.theshortbits.com
+    service: http://localhost:8080
+  - hostname: news.zeeshandehlvi.com
+    service: http://localhost:8080
+  - hostname: sb.zeeshandehlvi.com
+    service: http://localhost:3500
+  - service: http_status:404
